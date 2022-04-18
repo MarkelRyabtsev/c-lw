@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <conio.h>
+#include <math.h>
 #include "constants.h"
 #include "helper.h"
 
@@ -105,12 +106,36 @@ int do_task_3() {
 }
 
 int do_task_4() {
+
+    double function(double value) {
+        return value*value*value - 18 * value - 83;
+    }
+
     printf("--------------------------------------------Задание 4--------------------------------------------\n");
     printf("Написать программу, в которой необходимо найти корень уравнения, используя метод хорд."
            "\nПредусмотреть использование указателя на функцию  и прототипа функции. Вывести на экран корень"
-           "\nуравнения и количество итераций");
+           "\nуравнения и количество итераций\n");
+    printf("-------------------------------------------------------------------------------------------------\n");
+    struct Range range = {-100, 100};
+    printf("Введите пределы хорды:\n");
+    unsigned short a = get_natural_number(range, "a: ");
+    unsigned short b = get_natural_number(range, "b: ");
+    double eps = 0.001;
+    double sup = (double)a;
+    double inf = (double)b;
+    printf("Погрешность = %g\n", eps);
+    int counter = 0;
+    printf("-------------------------------------------------------------------------------------------------\n");
+    while(fabs(inf - sup) > eps) {
+        sup = inf - (inf - sup) * function(inf) / (function(inf) - function(sup));
+        inf = sup - (sup - inf) * function(sup) / (function(sup) - function(inf));
+        counter++;
+    }
+    printf("Корень уравнения, с точностью = %g, приближенно равен = %f\n", eps, sup);
+    printf("Количество итераций = %d", counter);
     printf("\n-------------------------------------------------------------------------------------------------\n");
-    return 1;
+    system("pause");
+    return 0;
 }
 
 void select_task() {
